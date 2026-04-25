@@ -1,0 +1,305 @@
+{
+  "info": {
+    "name": "Grid07 Assignment API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "grid07-assignment-api"
+  },
+  "item": [
+    {
+      "name": "Phase 1 - Create Post",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"authorId\": 1,\n  \"content\": \"My first post\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/posts",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts"
+          ]
+        },
+        "description": "Creates a new post.\n\nResponse:\n{\n  \"id\": 1,\n  \"authorId\": 1,\n  \"content\": \"My first post\",\n  \"createdAt\": \"2026-04-24T14:45:00\"\n}"
+      }
+    },
+    {
+      "name": "Phase 1 - Add Comment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"postId\": 1,\n  \"content\": \"Nice post!\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/posts/1/comments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts",
+            "1",
+            "comments"
+          ]
+        },
+        "description": "Adds a comment to post 1.\n\nResponse:\n{\n  \"id\": 1,\n  \"postId\": 1,\n  \"content\": \"Nice post!\",\n  \"createdAt\": \"2026-04-24T14:46:00\"\n}"
+      }
+    },
+    {
+      "name": "Phase 1 - Like Post",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:8080/api/posts/1/like",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts",
+            "1",
+            "like"
+          ]
+        },
+        "description": "Likes post 1.\n\nResponse:\n\"Post 1 liked. Current score: 20\""
+      }
+    },
+    {
+      "name": "Phase 2 - Like Post (Score +20)",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:8080/api/posts/1/like",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts",
+            "1",
+            "like"
+          ]
+        },
+        "description": "Likes post 1. Increments Redis virality score by +20.\n\nResponse:\n\"Post 1 liked. Current score: 20\""
+      }
+    },
+    {
+      "name": "Phase 2 - Comment on Post (Score +50)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"postId\": 1,\n  \"content\": \"Another comment\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/posts/1/comments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts",
+            "1",
+            "comments"
+          ]
+        },
+        "description": "Adds a human comment to post 1. Increments Redis virality score by +50.\n\nResponse:\n{\n  \"id\": 2,\n  \"postId\": 1,\n  \"content\": \"Another comment\",\n  \"createdAt\": \"2026-04-24T14:47:00\"\n}"
+      }
+    },
+    {
+      "name": "Phase 2 - Bot Reply (Score +1, capped at 100)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"postId\": 1,\n  \"content\": \"Automated bot reply\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/posts/1/botReply",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts",
+            "1",
+            "botReply"
+          ]
+        },
+        "description": "Adds a bot reply to post 1. Increments Redis virality score by +1.\n\nResponse:\n\"Bot reply added. Current score: 71\"\n\nIf over 100 replies:\nHTTP 429 Too Many Requests"
+      }
+    },
+    {
+      "name": "Phase 3 - Get Trending Posts",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/posts/trending",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts",
+            "trending"
+          ]
+        },
+        "description": "Returns posts with virality score > 100.\n\nResponse:\n[\n  {\n    \"id\": 1,\n    \"authorId\": 1,\n    \"content\": \"My first post\",\n    \"createdAt\": \"2026-04-24T14:45:00\"\n  }\n]"
+      }
+    },
+    {
+      "name": "Phase 3 - Get Analytics",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/posts/analytics",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts",
+            "analytics"
+          ]
+        },
+        "description": "Returns analytics summary.\n\nResponse:\n{\n  \"totalPosts\": 1,\n  \"totalComments\": 2,\n  \"totalBots\": 1\n}"
+      }
+    },
+    {
+      "name": "Phase 4 - Like Post (Trigger Notification)",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:8080/api/posts/1/like",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts",
+            "1",
+            "like"
+          ]
+        },
+        "description": "Likes post 1. If score >200, triggers notification.\n\nResponse:\n{\n  \"message\": \"Post 1 liked. Current score: 220\",\n  \"notification\": \"Post 1 has crossed the virality threshold!\"\n}"
+      }
+    },
+    {
+      "name": "Phase 4 - Comment (Audit Log Entry)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"postId\": 1,\n  \"content\": \"Phase 4 test comment\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/posts/1/comments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts",
+            "1",
+            "comments"
+          ]
+        },
+        "description": "Adds comment and creates audit log entry.\n\nResponse:\n{\n  \"id\": 3,\n  \"postId\": 1,\n  \"content\": \"Phase 4 test comment\",\n  \"createdAt\": \"2026-04-24T14:48:00\"\n}"
+      }
+    },
+    {
+      "name": "Phase 4 - Get Top Viral Posts",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/posts/topviral",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts",
+            "topviral"
+          ]
+        },
+        "description": "Returns top 5 posts by virality score.\n\nResponse:\n[\n  { \"postId\": 1, \"score\": 220 },\n  { \"postId\": 3, \"score\": 180 }\n]"
+      }
+    },
+    {
+      "name": "Phase 4 - Get Daily Summary",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/posts/dailySummary",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "posts",
+            "dailySummary"
+          ]
+        },
+        "description": "Returns daily engagement summary.\n\nResponse:\n{\n  \"date\": \"2026-04-24\",\n  \"totalLikes\": 25,\n  \"totalComments\": 10,\n  \"totalBotReplies\": 5\n}"
+      }
+    }
+  ]
+}
