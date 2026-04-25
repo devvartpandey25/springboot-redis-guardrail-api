@@ -1,0 +1,9 @@
+
+{
+  "info": { "name": "Grid07 API", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "item": [
+    { "name": "Create Post", "request": { "method": "POST", "url": "{{baseUrl}}/api/posts" } },
+    { "name": "Comment", "request": { "method": "POST", "url": "{{baseUrl}}/api/posts/1/comments" } },
+    { "name": "Like", "request": { "method": "POST", "url": "{{baseUrl}}/api/posts/1/like" } }
+  ]
+}
