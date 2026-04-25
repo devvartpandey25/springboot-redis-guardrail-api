@@ -69,4 +69,4 @@ A scheduled job runs every 5 minutes to process and summarize pending notificati
    
 2. Run the Spring Boot application
 3. Test APIs using Postman
->>>>>>> 7453924bc61f3d0aa2abc56fe8267ca044bdd177
+
